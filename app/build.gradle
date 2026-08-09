@@ -1,0 +1,61 @@
+plugins {
+    //noinspection AndroidGradlePluginVersion
+    id 'com.android.application' version '8.13.2'
+    id 'cn.lalaki.repack' version '3.0.3-LTS'
+}
+android {
+    namespace = 'cn.lalaki.rc'
+    compileSdkPreview = "CinnamonBun"
+    buildToolsVersion = '37.0.0'
+    defaultConfig {
+        //noinspection ExpiredTargetSdkVersion
+        targetSdk = 37
+        applicationId "cn.lalaki.rc"
+        minSdk = 30
+        versionCode 1
+        versionName "1.0"
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_22
+        targetCompatibility JavaVersion.VERSION_22
+    }
+    signingConfigs {
+        release {
+            enableV1Signing = true
+            enableV2Signing = false
+            enableV3Signing = false
+            enableV4Signing = false
+            keyAlias = "0"
+            keyPassword = "000000"
+            storePassword = "000000"
+            storeFile = file("D:\\lalaki-new-1.jks")
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled true
+            debuggable false
+            jniDebuggable false
+            shrinkResources = true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig = signingConfigs.release
+        }
+    }
+    dependenciesInfo {
+        includeInApk = false
+        includeInBundle = false
+    }
+}
+repackConfig {
+    quiet = true
+    resign = true
+    addV1Sign = true
+    addV2Sign = true
+    disableV3V4 = true
+    blacklist = new String[]{"META-INF"}
+}
+tasks.configureEach {
+    if (it.name.toLowerCase().contains("jni")) {
+        it.enabled = false
+    }
+}

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="rc">LRC</string>
+    <string name="result">Quick tip: If you only see a few simple getprop parameters below, your hiding setup is working great (just remember to double-check the values yourself). If a huge pile of messy data pops up, that means your device is in danger.\n\n*Detection Results:\n</string>
+    <string name="tip">Permission Request</string>
+    <string name="ok">Continue</string>
+    <string name="cancel">Cancel</string>
+    <string name="done">OK</string>
+    <string name="msg">All Files Access permission is required. Do you want to continue?</string>
+    <string name="app_label">Lalaki Magisk &amp; Bootloader Detector</string>
+    <string name="example">View Example</string>
+</resources>
