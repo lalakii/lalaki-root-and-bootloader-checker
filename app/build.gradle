@@ -13,7 +13,7 @@ android {
         applicationId "cn.lalaki.rc"
         minSdk = 30
         versionCode 1
-        versionName "1.0"
+        versionName "1.1"
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_22

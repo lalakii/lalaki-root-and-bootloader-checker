@@ -8,5 +8,12 @@
     <string name="done">确定</string>
     <string name="msg">需要授予所有文件访问权限, 是否继续?</string>
     <string name="app_label">拉拉姬 Magisk 和 Bootloader 检测</string>
-    <string name="example">查看示例</string>
+    <string name="example">查看正常示例</string>
+
+    <style name="theme">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:forceDarkAllowed">true</item>
+        <item name="android:windowLayoutInDisplayCutoutMode">shortEdges</item>
+    </style>
 </resources>

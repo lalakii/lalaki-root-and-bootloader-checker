@@ -1,5 +1,7 @@
 package c;
 
+import android.annotation.SuppressLint;
+import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -36,10 +38,12 @@ import cn.lalaki.rc.R;
  * @since lalaki root checker
  */
 public class Rc extends android.app.Activity {
+    @SuppressLint("ClickableViewAccessibility")
     @SuppressWarnings("resource")
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (!Environment.isExternalStorageManager()) {
             DialogInterface.OnClickListener dialogClickListener = (_, i) -> {
                 if (i == AlertDialog.BUTTON_POSITIVE) {
@@ -76,6 +80,7 @@ public class Rc extends android.app.Activity {
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
         mainLayout.addView(scrollView, layoutParams);
+        mainLayout.setFitsSystemWindows(true);
         setContentView(mainLayout);
         ExecutorService service = Executors.newCachedThreadPool();
         CountDownLatch latch = new CountDownLatch(1);
@@ -107,6 +112,10 @@ public class Rc extends android.app.Activity {
                 cmdList.add(new String[]{binName, "--help"});
                 cmdList.add(new String[]{"/system/bin/sh", "-c", String.format("%s --help", binName)});
             }
+            cmdList.add(new String[]{"/system/bin/sh", "-c", "mount | grep -i -E \"ksu|module\""});
+            cmdList.add(new String[]{"/system/bin/sh", "-c", "cat /proc/self/mounts | grep -i -E \"ksu|module\""});
+            cmdList.add(new String[]{"/system/bin/sh", "-c", "cat /proc/self/mountinfo | grep -i \"ksu|module\""});
+            cmdList.add(new String[]{"/system/bin/sh", "-c", "cat /proc/self/mountstats | grep -i \"ksu|module\""});
             // 检测下列路径是否存在 magisk 相关内容, 脚本或日志文件
             String[] dirArr = {Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath(), "/system/addon.d", "/data/local/tmp"};
             for (String dir : dirArr) {
@@ -152,9 +161,12 @@ public class Rc extends android.app.Activity {
                     }
                 }
             }
-            Intent launchIntent = getPackageManager().getLaunchIntentForPackage("com.topjohnwu.magisk"); // 检测Magisk App
-            if (launchIntent != null) {
-                invoke(tv, "Magisk App Exists");
+            String[] apps = {"me.bmax.apatch", "com.topjohnwu.magisk", "com.tsng.hidemyapplist"};
+            for (String it : apps) {
+                Intent launchIntent = getPackageManager().getLaunchIntentForPackage(it); // 检测Magisk App
+                if (launchIntent != null) {
+                    invoke(tv, it + " - App Exists");
+                }
             }
             List<ApplicationInfo> appList;
             if (Build.VERSION.SDK_INT > Build.VERSION_CODES.S_V2) {
@@ -171,7 +183,16 @@ public class Rc extends android.app.Activity {
             }
             latch.countDown();
         });
-
+        scrollView.setOnTouchListener((_, _) -> {
+            try {
+                ActionBar bar = getActionBar();
+                if (bar != null) {
+                    bar.hide();
+                }
+            } catch (Exception _) {
+            }
+            return false;
+        });
     }
 
     private void invoke(TextView view, String log) {

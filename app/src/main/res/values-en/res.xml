@@ -8,5 +8,5 @@
     <string name="done">OK</string>
     <string name="msg">All Files Access permission is required. Do you want to continue?</string>
     <string name="app_label">Lalaki Magisk &amp; Bootloader Detector</string>
-    <string name="example">View Example</string>
+    <string name="example">View Standard Example</string>
 </resources>
